@@ -1,8 +1,8 @@
 <div>
 
-  <h1 *ngIf="loading; else elseBlock">CHESS PUZZLES 3D (LOADING...)</h1>
+  <h1 class="bannerPrimary" *ngIf="loading; else elseBlock">CHESS PUZZLES 3D (LOADING...)</h1>
   <ng-template #elseBlock>
-    <h1>CHESS PUZZLES 3D</h1>
+    <h1 class="bannerPrimary">CHESS PUZZLES 3D</h1>
   </ng-template>
   <button id="setWhite" (click)="setPerspectiveModeWhite()" type="button" class="color-button-selected">
     <img src="assets/icons/whiteKing.svg" />
