@@ -1,0 +1,39 @@
+<div>
+
+  <h1 *ngIf="loading; else elseBlock">Chess Puzzles 3D (Loading...)</h1>
+  <ng-template #elseBlock>
+    <h1>CHESS PUZZLES 3D</h1>
+  </ng-template>
+  <button id="setWhite" (click)="setPerspectiveModeWhite()" type="button" class="color-button-selected">
+    <img src="assets/icons/whiteKing.svg" />
+  </button>
+  <button id="setBlack" (click)="setPerspectiveModeBlack()" type="button" class="color-button">
+    <img src="assets/icons/blackKing.svg" /> </button>
+  <div id="canvas-container">
+    <canvas id="theCanvas" style="height: 1%; width: 1%;">
+    </canvas>
+  </div>
+  <div [hidden]="!question || (question === 'undefined') || !answer || (answer === 'haqrsvarq')">
+    <div>
+      <span class='questionAnswer'>{{question}}</span> <span class='questionAnswer'><strong>{{showAnswer ? answer : ''
+          }}</strong></span>
+    </div>
+    <div class="button-container">
+      <button type="button" class="styled-button" (click)="toggleShow()">{{showAnswer? 'HIDE' : 'ANSWER'}}</button>
+    </div>
+  </div>
+  <h2 class="bannerSecondary">
+    SHARE
+  </h2>
+  <a class="side-link" href={{getTwitterUrl()}} target="_blank" rel="noopener noreferrer">
+    <img style="width:1.75em" alt="share to twitter" src='assets/twitter.svg' />
+  </a>
+  <a class="side-link" href={{getEmailUrl()}} target="_blank" rel="noopener noreferrer">
+    <img style="width:1.75em" alt="share to email" src='assets/email.svg' />
+  </a>
+  <a class="side-link" href={{getSmsUrl()}} target="_blank" rel="noopener noreferrer">
+    <img style="width:1.75em" alt="share to sms" src='assets/sms.svg' />
+  </a>
+  <hr />
+  <a class="github" href="https://github.com/smycynek/chess-puzzles-3d-v2">https://github.com/smycynek/chess-puzzles-3d-v2</a>
+</div>
