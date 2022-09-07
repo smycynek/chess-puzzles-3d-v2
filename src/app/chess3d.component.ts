@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 /* eslint-disable dot-notation */
 /* eslint-disable lines-between-class-members */
 /* eslint-disable class-methods-use-this */
@@ -67,6 +68,7 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
   public answer = '';
   // reverseQuery: any;
   public showAnswer: boolean;
+  reverseQuery = '';
 
   constructor(private readonly route: ActivatedRoute) {
     this.showAnswer = false;
@@ -89,6 +91,21 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
     return `sms:&body=${headline}%20${fullStr}`;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private getReverseQuery(params: any): string {
+    const base = 'https://stevenvictor.net/chess/#/chess/create/sknsk?';
+    const data = params['data'];
+    const question = params['question'];
+    const answer = params['answer'];
+    const view = params['view'];
+    const dataParam = data ? `data=${encodeURIComponent(data)}` : '';
+    const questionParam = question ? `&question=${encodeURIComponent(question)}` : '';
+    const answerParam = answer ? `&answer=${encodeURIComponent(answer)}` : '';
+    const editModeParam = '&editMode=true';
+    const viewParam = `&view=${view}`;
+    return `${base}${dataParam}${questionParam}${answerParam}${editModeParam}${viewParam}`;
+  }
+
   ngOnInit(): void {
     this.answer = 'hafrg';
     this.route.queryParams
@@ -98,7 +115,7 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
         }
         this.question = params['question'] || 'QUESTION UNSET';
         this.answer = rot13Cipher(params['answer'] ? params['answer'] : 'Nafjre hafrg');
-        // this.reverseQuery = this.getReverseQuery(params);
+        this.reverseQuery = this.getReverseQuery(params);
         this.viewPoint = params['view'] === 'b' ? PieceColor.Black : PieceColor.White;
       });
 

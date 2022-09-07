@@ -15,11 +15,16 @@
   </div>
   <div [hidden]="!question || (question === 'undefined') || !answer || (answer === 'haqrsvarq')">
     <div>
-      <span class='questionAnswer'>{{question}}</span> <span class='questionAnswer'><strong>{{showAnswer ? answer : ''
-          }}</strong></span>
+      <span class='questionAnswer'>{{question}}</span> <span class='questionAnswer'><strong>{{showAnswer ? answer : ' ' }}
+          </strong></span>
     </div>
     <div class="button-container">
       <button type="button" class="styled-button" (click)="toggleShow()">{{showAnswer? 'HIDE' : 'ANSWER'}}</button>
+
+
+
+        <a href={{reverseQuery}} class="styled-button-href" target="_blank" rel="noreferrer noopener">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EDITOR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+
     </div>
   </div>
   <h2 class="bannerSecondary">
