@@ -3,16 +3,9 @@
 import { Params } from '@angular/router';
 import { Assignment, fileSymbolMap, PieceColor, pieceSymbolMap } from './types';
 
-export const standardSetup = 'wRa1,wNb1,wBc1,wQd1,wKe1,wBf1,wNg1,wRh1,wPa2,wPb2,wPc2,wPd2,wPe2,wPf2,wPg2,wPh2,bRa8,bNb8,bBc8,bQd8,bKe8,bBf8,bNg8,bRh8,bPa7,bPb7,bPc7,bPd7,bPe7,bPf7,bPg7,bPh7';
-export const startAngle = 250;
-export const endAngle = startAngle - 180;
-const cosineScale = 2 / Math.sqrt(2);
 const headline = 'Try%20this%20chess%20puzzle.';
 const twitterBase = 'http://twitter.com/share?text=';
-
-export const squareLength = 0.05;
-export const boardMidpoint: number = (squareLength * 3.5); // for piece placement;
-export const pieceScale = 1.0;
+const cosineScale = 2 / Math.sqrt(2);
 
 export const parseSquareString = (position: string): Assignment => {
   if (position.length !== 4) {
@@ -68,6 +61,7 @@ export function getSmsUrlImp(): string {
   const fullStr = encodeURIComponent(window.location.toString());
   return `sms:&body=${headline}%20${fullStr}`;
 }
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function getReverseQuery(params: Params): string {
   const base = 'https://stevenvictor.net/chess/#/chess/create/sknsk?';

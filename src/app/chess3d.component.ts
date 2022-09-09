@@ -10,12 +10,12 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
-
 import { extraDarkGrey, ivoryBackground, materialBoardBase, materialDarkSquare, materialLightSquare, offsetTexture, setPieceColor, setupBaseMaterial, setupTileMaterials } from './appearances';
+import { standardSetup, startAngle, endAngle, squareLength, boardMidpoint, piecePath, pieceScale, annotationOffset, annotationPath } from './constants';
 import { buildLights } from './lighting';
 import { Assignment, BoardFile, Piece, PieceColor, pieceMap } from './types';
-import { boardMidpoint, endAngle, getEmailUrlImp, getOrbitCoords, getReverseQuery, getSmsUrlImp,
-  getTwitterUrlImp, parseSquareString, pieceScale, squareLength, standardSetup, startAngle } from './utility';
+import { getEmailUrlImp, getOrbitCoords, getReverseQuery, getSmsUrlImp,
+  getTwitterUrlImp, parseSquareString } from './utility';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const rot13Cipher = require('rot13-cipher');
@@ -35,11 +35,12 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
   private canvas!: HTMLCanvasElement;
   private camera!: THREE.PerspectiveCamera;
   private controls!: OrbitControls;
-  private pieces!: Map<string, THREE.Object3D>;
-  private annotations!: Map<string, THREE.Object3D>;
+  private pieces: Map<string, THREE.Object3D> = new Map<Piece, THREE.Object3D>();
+  private annotations: Map<string, THREE.Object3D> = new Map<string, THREE.Object3D>();
   private readonly loaderGLTF = new GLTFLoader();
   private renderer!: THREE.WebGLRenderer;
-  private scene!: THREE.Scene;
+  private scene: THREE.Scene = new THREE.Scene();
+
   private setBlackButton: HTMLButtonElement | null = null;
   private setWhiteButton: HTMLButtonElement | null = null;
   public question = '';
@@ -196,7 +197,7 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
   private async newPiece(
     assignment: Assignment,
   ): Promise<void> {
-    const pieceKey = `${assignment.piece}_${(assignment.color === PieceColor.White) ? 'White' : 'Black'}`;
+    const pieceKey = `${assignment.piece}_${assignment.color}`;
     let newPiece = this.pieces.get(pieceKey)?.clone(true);
     if (newPiece == null) {
       await this.loadPiece(assignment.piece);
@@ -225,20 +226,18 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
   }
 
   private async loadPiece(piece: Piece): Promise<void> {
-    const path = 'assets/pieces/';
     const filename = pieceMap.get(piece);
-    const gltfP = await this.loaderGLTF.loadAsync(path + filename);
-    const gltf = gltfP;
-    const whiteModel = gltf.scene.children[0];
-    whiteModel.rotation.x = Math.PI / 2;
-    whiteModel.rotation.y = Math.PI;
-    whiteModel.rotation.z = Math.PI / 2;
-    whiteModel.scale.multiplyScalar(pieceScale);
-    setPieceColor(whiteModel, PieceColor.White);
-    const blackModel = whiteModel.clone();
-    setPieceColor(blackModel, PieceColor.Black);
-    this.pieces.set(`${piece}_White`, whiteModel);
-    this.pieces.set(`${piece}_Black`, blackModel);
+    const gltfP = await this.loaderGLTF.loadAsync(`${piecePath}${filename}`);
+    const whitePiece = gltfP.scene.children[0];
+    whitePiece.rotation.x = Math.PI / 2;
+    whitePiece.rotation.y = Math.PI;
+    whitePiece.rotation.z = Math.PI / 2;
+    whitePiece.scale.multiplyScalar(pieceScale);
+    const blackPiece = whitePiece.clone();
+    setPieceColor(whitePiece, PieceColor.White);
+    setPieceColor(blackPiece, PieceColor.Black);
+    this.pieces.set(`${piece}_${PieceColor.White}`, whitePiece);
+    this.pieces.set(`${piece}_${PieceColor.Black}`, blackPiece);
   }
 
   private async newAnnotation(name: string, position: number, side: string): Promise<void> {
@@ -246,17 +245,17 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
     if (newModel != null) {
       if (side === 'front') {
         newModel.position.x = -boardMidpoint + squareLength * (position - 1);
-        newModel.position.z = boardMidpoint + squareLength * 0.8; // //.04
+        newModel.position.z = boardMidpoint + squareLength * annotationOffset;
       } else if (side === 'back') {
         newModel.rotation.z = Math.PI;
         newModel.position.x = -boardMidpoint + squareLength * (position - 1);
-        newModel.position.z = -boardMidpoint + -squareLength * 0.8;
+        newModel.position.z = -boardMidpoint + -squareLength * annotationOffset;
       } else if (side === 'left') {
-        newModel.position.x = -boardMidpoint - squareLength * 0.8;
+        newModel.position.x = -boardMidpoint - squareLength * annotationOffset;
         newModel.position.z = boardMidpoint + squareLength + -squareLength * (position);
       } else if (side === 'right') {
         newModel.rotation.z = Math.PI;
-        newModel.position.x = boardMidpoint + squareLength * 0.8;
+        newModel.position.x = boardMidpoint + squareLength * annotationOffset;
         newModel.position.z = boardMidpoint + squareLength + -squareLength * (position);
       }
       this.scene.add(newModel);
@@ -267,8 +266,7 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
   }
 
   private async loadAnnotation(name: string): Promise<void> {
-    const path = 'assets/annotations/';
-    const gltfP = await this.loaderGLTF.loadAsync(`${path}${name}.gltf`);
+    const gltfP = await this.loaderGLTF.loadAsync(`${annotationPath}${name}.gltf`);
     const gltf = gltfP;
     const model = gltf.scene.children[0];
     model.rotation.x = Math.PI / 2;
@@ -331,9 +329,6 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
   }
 
   private async createScene(): Promise<void> {
-    this.scene = new THREE.Scene();
-    this.pieces = new Map<Piece, THREE.Object3D>();
-    this.annotations = new Map<string, THREE.Object3D>();
     this.setupNeutralView();
     this.setupLighting();
     setupBaseMaterial();
@@ -349,7 +344,6 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
 
   private enlargeCanvas(): void {
     const isMobile = navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i);
-
     if (isMobile != null) {
       this.canvas.style.width = '100%';
       this.canvas.style.height = '100%';
@@ -367,12 +361,7 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private getAspectRatio(): number {
-    if (this.canvas) {
-      return this.canvas.clientWidth / this.canvas.clientHeight;
-    }
-    return 1;
-  }
+  private getAspectRatio = () : number => (this.canvas ? (this.canvas.clientWidth / this.canvas.clientHeight) : 1);
 
   private setCamera(x: number, y: number, z: number): void {
     this.camera.position.set(x, y, z);

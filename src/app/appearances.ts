@@ -3,22 +3,19 @@ import * as THREE from 'three';
 import { Vector2 } from 'three';
 import { PieceColor } from './types';
 
-const path = 'assets/textures/';
-
+const texturePath = 'assets/textures/';
 export const darkBrown = new THREE.Color(0x665555);
 export const ivory = new THREE.Color(0xcfbfab);
 export const darkGreen = new THREE.Color(0x009933);
 export const ivoryBackground = new THREE.Color(0xcfbfab);
-
+export const extraDarkGrey = new THREE.Color(0x111111);
 let whiteMarble: THREE.Texture;
 let greenGranite: THREE.Texture;
 let wood: THREE.Texture;
 
-export const extraDarkGrey = new THREE.Color(0x111111);
-
 export function getWhiteMarble(): THREE.Texture {
   if (!(whiteMarble)) {
-    whiteMarble = new THREE.TextureLoader().load(`${path}whiteMarble.jpg`);
+    whiteMarble = new THREE.TextureLoader().load(`${texturePath}whiteMarble.jpg`);
     whiteMarble.repeat = new Vector2(0.25, 0.25);
   }
   return whiteMarble;
@@ -26,7 +23,7 @@ export function getWhiteMarble(): THREE.Texture {
 
 export function getWood(): THREE.Texture {
   if (!wood) {
-    wood = new THREE.TextureLoader().load(`${path}wood.jpg`);
+    wood = new THREE.TextureLoader().load(`${texturePath}wood.jpg`);
     wood.repeat = new Vector2(0.5, 0.5);
   }
   return wood;
@@ -34,7 +31,7 @@ export function getWood(): THREE.Texture {
 
 export function getGreenGranite(): THREE.Texture {
   if (!greenGranite) {
-    greenGranite = new THREE.TextureLoader().load(`${path}greenGranite.jpg`);
+    greenGranite = new THREE.TextureLoader().load(`${texturePath}greenGranite.jpg`);
     greenGranite.repeat = new Vector2(0.25, 0.25);
   }
   return greenGranite;
@@ -44,9 +41,7 @@ export function offsetTexture(material: THREE.MeshStandardMaterial): THREE.MeshS
   const materialNew = material.clone();
   if (materialNew.map != null) {
     materialNew.map = materialNew.map.clone();
-    const offset1 = Math.random() * 0.75;
-    const offset2 = Math.random() * 0.75;
-    materialNew.map.offset = new Vector2(offset1, offset2);
+    materialNew.map.offset = new Vector2(Math.random() * 0.75, Math.random() * 0.75);
   }
   return materialNew;
 }

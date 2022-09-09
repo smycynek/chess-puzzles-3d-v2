@@ -1,7 +1,7 @@
 /* eslint-disable no-shadow */
 export enum PieceColor {
-  White = 1,
-  Black = 2,
+  White = 'White',
+  Black = 'Black',
 }
 
 export enum BoardFile {
@@ -57,6 +57,3 @@ export interface Assignment {
   file: BoardFile;
   rank: number;
 }
-
-// todo, use lower case, iterate for annotation loading
-export const annotations = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', '1', '2', '3', '4', '5', '6', '7', '8'];
