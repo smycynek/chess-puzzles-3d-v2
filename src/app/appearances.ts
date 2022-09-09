@@ -1,6 +1,7 @@
-/* eslint-disable @typescript-eslint/strict-boolean-expressions */
+/* eslint-disable no-param-reassign */
 import * as THREE from 'three';
 import { Vector2 } from 'three';
+import { PieceColor } from './types';
 
 const path = 'assets/textures/';
 
@@ -37,4 +38,52 @@ export function getGreenGranite(): THREE.Texture {
     greenGranite.repeat = new Vector2(0.25, 0.25);
   }
   return greenGranite;
+}
+
+export function offsetTexture(material: THREE.MeshStandardMaterial): THREE.MeshStandardMaterial {
+  const materialNew = material.clone();
+  if (materialNew.map != null) {
+    materialNew.map = materialNew.map.clone();
+    const offset1 = Math.random() * 0.75;
+    const offset2 = Math.random() * 0.75;
+    materialNew.map.offset = new Vector2(offset1, offset2);
+  }
+  return materialNew;
+}
+
+export const materialDarkSquare = new THREE.MeshStandardMaterial();
+export const materialLightSquare = new THREE.MeshStandardMaterial();
+export const materialWhitePiece = new THREE.MeshPhongMaterial();
+export const materialBlackPiece = new THREE.MeshPhongMaterial();
+export const materialFelt = new THREE.MeshPhongMaterial();
+export const materialBoardBase = new THREE.MeshStandardMaterial();
+
+export function setupBaseMaterial(): void {
+  materialBoardBase.color = ivory;
+  materialBoardBase.map = getWood();
+}
+
+export function setupTileMaterials(): void {
+  materialDarkSquare.map = getGreenGranite();
+  materialLightSquare.map = getWhiteMarble();
+  materialBlackPiece.color = darkBrown;
+  materialWhitePiece.color = ivory;
+  materialFelt.color = darkGreen;
+}
+
+export function setPieceColor(model: THREE.Object3D, color: PieceColor): void {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  model.traverse((object: any) => {
+    if (object.isMesh) {
+      if (!object.name.includes('felt')) {
+        if (color === PieceColor.White) {
+          object.material = materialWhitePiece;
+        } else {
+          object.material = materialBlackPiece;
+        }
+      } else {
+        object.material = materialFelt;
+      }
+    }
+  });
 }

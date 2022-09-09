@@ -1,10 +1,9 @@
 <div>
-
   <h1 class="bannerPrimary" *ngIf="loading; else elseBlock">CHESS PUZZLES 3D (LOADING...)</h1>
   <ng-template #elseBlock>
     <h1 class="bannerPrimary">CHESS PUZZLES 3D</h1>
   </ng-template>
-  <button id="setWhite" (click)="setPerspectiveModeWhite()" type="button" class="color-button-selected">
+  <button id="setWhite" (click)="setPerspectiveModeWhite()" type="button" class="color-button">
     <img src="assets/icons/whiteKing.svg" />
   </button>
   <button id="setBlack" (click)="setPerspectiveModeBlack()" type="button" class="color-button">
@@ -13,18 +12,14 @@
     <canvas id="theCanvas" style="height: 1%; width: 1%;">
     </canvas>
   </div>
-  <div [hidden]="!question || (question === 'undefined') || !answer || (answer === 'haqrsvarq')">
+  <div>
     <div>
       <span class='questionAnswer'>{{question}}</span> <span class='questionAnswer'><strong>{{showAnswer ? answer : ' ' }}
           </strong></span>
     </div>
     <div class="button-container">
       <button type="button" class="styled-button" (click)="toggleShow()">{{showAnswer? 'HIDE' : 'ANSWER'}}</button>
-
-
-
         <a href={{reverseQuery}} class="styled-button-href" target="_blank" rel="noreferrer noopener">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EDITOR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-
     </div>
   </div>
   <h2 class="bannerSecondary">

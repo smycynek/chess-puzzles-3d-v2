@@ -16,21 +16,21 @@ export enum BoardFile {
 }
 
 export enum Piece {
-  pawn = 'P',
-  knight = 'N',
-  bishop = 'B',
-  rook = 'R',
-  queen = 'Q',
-  king = 'K'
+  Pawn = 'P',
+  Knight = 'N',
+  Bishop = 'B',
+  Rook = 'R',
+  Queen = 'Q',
+  King = 'K'
 }
 
 export const pieceMap = new Map<Piece, string>();
-pieceMap.set(Piece.pawn, 'pawn_asm_c.gltf');
-pieceMap.set(Piece.knight, 'knight_asm_c.gltf');
-pieceMap.set(Piece.bishop, 'bishop_asm_c.gltf');
-pieceMap.set(Piece.rook, 'rook_asm_c.gltf');
-pieceMap.set(Piece.queen, 'queen_asm_c.gltf');
-pieceMap.set(Piece.king, 'king_asm_c.gltf');
+pieceMap.set(Piece.Pawn, 'pawn_asm_c.gltf');
+pieceMap.set(Piece.Knight, 'knight_asm_c.gltf');
+pieceMap.set(Piece.Bishop, 'bishop_asm_c.gltf');
+pieceMap.set(Piece.Rook, 'rook_asm_c.gltf');
+pieceMap.set(Piece.Queen, 'queen_asm_c.gltf');
+pieceMap.set(Piece.King, 'king_asm_c.gltf');
 
 export const fileSymbolMap: Map<string, BoardFile> = new Map<string, BoardFile>([
   ['a', BoardFile.a],
@@ -43,10 +43,20 @@ export const fileSymbolMap: Map<string, BoardFile> = new Map<string, BoardFile>(
   ['h', BoardFile.h]]);
 
 export const pieceSymbolMap = new Map<string, Piece>([
-  ['K', Piece.king],
-  ['Q', Piece.queen],
-  ['P', Piece.pawn],
-  ['R', Piece.rook],
-  ['B', Piece.bishop],
-  ['N', Piece.knight],
+  ['K', Piece.King],
+  ['Q', Piece.Queen],
+  ['P', Piece.Pawn],
+  ['R', Piece.Rook],
+  ['B', Piece.Bishop],
+  ['N', Piece.Knight],
 ]);
+
+export interface Assignment {
+  color: PieceColor;
+  piece: Piece;
+  file: BoardFile;
+  rank: number;
+}
+
+// todo, use lower case, iterate for annotation loading
+export const annotations = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', '1', '2', '3', '4', '5', '6', '7', '8'];

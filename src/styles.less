@@ -1,9 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
 
-h1 {
-  font-size: x-large;
-}
+
 h1, h2, h3, head, body, span, p, a, button, ul, li, label, input, .nav-tab {
     font-family: 'Tahoma', 'Arial', sans-serif;
   }
@@ -17,26 +15,14 @@ h1, h2, h3, head, body, span, p, a, button, ul, li, label, input, .nav-tab {
     margin-left: 0.5em;
   }
 
-  .section {
-    text-align:left;
-    margin:0.25em;
-    padding:0.25em;
-
-  }
-  .main {
-    text-align:left;
-    margin:0.5em;
-  }
-
   .shareButton {
     display: 'block';
     width: '1.75em';
     height: '1.75em';
   }
 
-  .banner {
+  .banner-base {
     line-height: '0.5em';
-    font-size: 1.75em;
     margin-top: 0.5em;
     margin-bottom: 0.1em;
     padding: 0em;
@@ -44,50 +30,14 @@ h1, h2, h3, head, body, span, p, a, button, ul, li, label, input, .nav-tab {
   }
 
   .bannerPrimary {
-    line-height: '0.5em';
+    .banner-base;
     font-size: medium;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-    padding: 0em;
-    font-weight: bold;
+
   }
 
   .bannerSecondary {
-    line-height: '0.5em';
+    .banner-base;
     font-size: small;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-    padding: 0em;
-    font-weight: bold;
-  }
-
-  input[type='number']{
-      margin-top: 0.0em;
-      padding-top: 0.0em;
-      margin-bottom: 0.5em;
-      padding-left: 0.5em;
-      width: 55px;
-      font-size: x-small;
-  }
-
-  summary {
-    font-size: small;
-  }
-
-  .smallLabel {
-    font-weight: bold;
-    font-size: x-small;
-    margin-bottom: 0.0em;
-    padding-bottom: 0.0em;
-    margin-left: 0.5em;
-  }
-
-  .largeLabel {
-    font-weight: bold;
-    font-size: medium;
-    margin-bottom: 0.0em;
-    padding-bottom: 0.0em;
-    margin-left: 0.5em;
   }
 
   .questionAnswer {
@@ -222,25 +172,23 @@ input {
   margin: 0px;
 }
 
-
-.color-button{
+.color-button-base {
   border-width: 2.0px;
-  border-style: none;
+  border-style: solid;
   background-color:#cfbfab;
+  border-color: #cfbfab;
   color: black;
   margin: 0.25em;
   padding: 0.25em;
+  border-radius: 8px;
 }
 
-.color-button-selected {
-  border-width: 2.0px;
-  border-style: none;
-  background-color:#cfbfab;
-  color: black;
-  border-style: solid;
+.color-button {
+  .color-button-base
+}
+
+.color-button-selected{
+  .color-button-base;
   border-color: black;
-  border-radius: 8px;
-  margin: 0.25em;
-  padding: 0.0em;
 }
 

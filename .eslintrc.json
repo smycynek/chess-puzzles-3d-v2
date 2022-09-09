@@ -15,6 +15,8 @@
     "import/extensions": "off",
     "import/prefer-default-export": "off",
     "object-curly-newline": "off",
-    "dot-notation": "warn"
+    "dot-notation": "warn",
+    "max-len": ["error", { "code": 200 }],
+    "no-throw-literal": "off"
   }
 }
