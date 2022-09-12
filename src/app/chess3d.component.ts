@@ -16,7 +16,7 @@ import { buildLights } from './lighting';
 import { Assignment, BoardFile, Piece, PieceColor, pieceMap } from './types';
 import { getEmailUrlImp, getOrbitCoords, getReverseQuery, getSmsUrlImp,
   getTwitterUrlImp, parseSquareString } from './utility';
-
+import { puzzles } from './puzzles';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const rot13Cipher = require('rot13-cipher');
 
@@ -26,9 +26,9 @@ const rot13Cipher = require('rot13-cipher');
   styleUrls: ['./chess3d.component.less'],
 })
 export class Chess3dComponent implements OnInit, AfterViewInit {
-  @Input() public fieldOfView = 1;
-  @Input('nearClipping') public nearClippingPane = 1;
-  @Input('farClipping') public farClippingPane = 1000;
+  @Input() public fieldOfView = 19.0;
+  @Input('nearClipping') public nearClippingPane = 0.01;
+  @Input('farClipping') public farClippingPane = 100000;
   @Input('dataStr') public dataStr = standardSetup;
   public viewPoint: PieceColor = PieceColor.White;
   public loading = true;
@@ -84,6 +84,11 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
     this.showAnswer = !this.showAnswer;
   }
 
+  public getRandomPuzzle(): string {
+    const index = Math.floor(Math.random() * 5);
+    return `https://www.stevenvictor.net/chess3d?${puzzles[index]}`;
+  }
+
   public setPerspectiveModeWhite(): void {
     this.viewPoint = PieceColor.White;
     const coords = { t: startAngle };
@@ -129,6 +134,7 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
     if (container != null) {
       container.appendChild(renderer.domElement);
     }
+    this.camera.lookAt(0.0, 0, 0);
     this.controls = new OrbitControls(this.camera, renderer.domElement);
     this.controls.autoRotate = false;
     this.controls.enableZoom = true;
@@ -322,6 +328,7 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
       this.nearClippingPane,
       this.farClippingPane,
     );
+    this.camera.lookAt(0.0, 0, 0);
     this.scene.background = ivoryBackground;
     this.setCamera(
       ...getOrbitCoords(endAngle),
@@ -365,7 +372,7 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
 
   private setCamera(x: number, y: number, z: number): void {
     this.camera.position.set(x, y, z);
-    this.camera.lookAt(0, 0, 0);
+    this.camera.lookAt(0.0, 0, 0);
   }
 
   private startRenderingLoop(): void {

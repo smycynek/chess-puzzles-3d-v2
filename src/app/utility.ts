@@ -42,9 +42,9 @@ export function radians(degrees: number): number {
 }
 
 export function getOrbitCoords(degrees: number): [number, number, number] {
-  return [cosineScale * -14 * Math.cos(radians(degrees)),
-    7,
-    cosineScale * 14 * Math.sin(radians(degrees))];
+  return [cosineScale * -0.7 * Math.cos(radians(degrees)),
+    0.35,
+    cosineScale * 0.7 * Math.sin(radians(degrees))];
 }
 
 export function getTwitterUrlImp(): string {
