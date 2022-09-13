@@ -90,6 +90,7 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
   }
 
   public setPerspectiveModeWhite(): void {
+    this.controls.reset();
     this.viewPoint = PieceColor.White;
     const coords = { t: startAngle };
     new TWEEN.Tween(coords)
@@ -101,6 +102,7 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
   }
 
   public setPerspectiveModeBlack(): void {
+    this.controls.reset();
     this.viewPoint = PieceColor.Black;
     const coords = { t: endAngle };
     new TWEEN.Tween(coords)
