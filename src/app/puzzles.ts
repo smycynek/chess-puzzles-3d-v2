@@ -10,7 +10,3 @@ export const puzzles: string[] = [
   'question=Should%20white%20promote%20to%20queen%20on%20c%3F&answer=Ab!%20%20Oynpx%20pna%20vzzrqvngryl%20pncgher.%20%20Gel%20Ao6%23%20vafgrnq.&data=wKh1,wRb1,wPg2,wPf2,bBh3,wNc4,bPh4,wBe5,wPc6,wPc7,bNa7,bKa8,bBh8&editMode=false&view=w&index=6',
   'question=Can%20white%20check%3F&answer=Ab%20--%20oynpx%20ebbx%20cvaf%20vg.&data=wKh1%2CwRd1%2CbRa1%2CwPf2%2CwPg2%2CwPh2%2CbPh7%2CbPg7%2CbPf7%2CbKh8&view=w&index=7',
 ];
-
-export const defaultPuzzle = 'wKh1,bBc1,bBd1,wPg2,wPh2,wNe4,bPd5,bPc6,bPb6,wRg6,wPg7,bPf7,bPh7,bQb7,wRe7,bRa8,bRb8,bKg8';
-export const defaultQuestion = 'White to move';
-export const defaultAnswer = 'As6#';

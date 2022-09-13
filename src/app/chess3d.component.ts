@@ -84,8 +84,13 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
     this.showAnswer = !this.showAnswer;
   }
 
+  public goToRandomPuzzle(): void {
+    window.location.href = this.getRandomPuzzle();
+  }
+
   public getRandomPuzzle(): string {
-    const index = Math.floor(Math.random() * 5);
+    const rnd = Math.random();
+    const index = Math.floor(rnd * puzzles.length);
     return `${base3dUrl}?${puzzles[index]}`;
   }
 
