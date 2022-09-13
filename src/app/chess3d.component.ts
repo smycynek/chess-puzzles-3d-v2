@@ -11,7 +11,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
 import { extraDarkGrey, ivoryBackground, materialBoardBase, materialDarkSquare, materialLightSquare, offsetTexture, setPieceColor, setupBaseMaterial, setupTileMaterials } from './appearances';
-import { standardSetup, startAngle, endAngle, squareLength, boardMidpoint, piecePath, pieceScale, annotationOffset, annotationPath } from './constants';
+import { standardSetup, startAngle, endAngle, squareLength, boardMidpoint, piecePath, pieceScale, annotationOffset, annotationPath, base3dUrl } from './constants';
 import { buildLights } from './lighting';
 import { Assignment, BoardFile, Piece, PieceColor, pieceMap } from './types';
 import { getEmailUrlImp, getOrbitCoords, getReverseQuery, getSmsUrlImp,
@@ -86,7 +86,7 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
 
   public getRandomPuzzle(): string {
     const index = Math.floor(Math.random() * 5);
-    return `https://www.stevenvictor.net/chess3d?${puzzles[index]}`;
+    return `${base3dUrl}?${puzzles[index]}`;
   }
 
   public setPerspectiveModeWhite(): void {
@@ -138,7 +138,7 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
     this.controls = new OrbitControls(this.camera, renderer.domElement);
     this.controls.autoRotate = false;
     this.controls.enableZoom = true;
-    this.controls.enablePan = false;
+    this.controls.enablePan = true;
     this.controls.enableRotate = true;
     this.controls.update();
   }

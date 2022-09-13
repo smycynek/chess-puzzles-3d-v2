@@ -1,6 +1,7 @@
 /* eslint-disable dot-notation */
 /* eslint-disable prefer-destructuring */
 import { Params } from '@angular/router';
+import { base2dUrl } from './constants';
 import { Assignment, fileSymbolMap, PieceColor, pieceSymbolMap } from './types';
 
 const headline = 'Try%20this%20chess%20puzzle.';
@@ -64,7 +65,7 @@ export function getSmsUrlImp(): string {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function getReverseQuery(params: Params): string {
-  const base = 'https://stevenvictor.net/chess/#/chess/create/sknsk?';
+  const base = `${base2dUrl}#/chess/create/sknsk?`;
   const data = params['data'];
   const question = params['question'];
   const answer = params['answer'];

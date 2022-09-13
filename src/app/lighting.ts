@@ -8,7 +8,7 @@ export function buildLights(): THREE.Light[] {
   directionalLight.position.set(0, 1, 0);
   directionalLight.castShadow = true;
 
-  const directionalLightBottom = new THREE.DirectionalLight(0xffffff, 0.1);
+  const directionalLightBottom = new THREE.DirectionalLight(0xffffff, 0.4);
   directionalLightBottom.position.set(0, -1, 0);
   directionalLightBottom.castShadow = false;
 

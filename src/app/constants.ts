@@ -7,3 +7,6 @@ export const annotationPath = 'assets/annotations/';
 export const squareLength = 0.05;
 export const boardMidpoint: number = (squareLength * 3.5); // for piece placement;
 export const pieceScale = 1.0;
+export const localhost = 'http://localhost:4200';
+export const base3dUrl = 'https://www.stevenvictor.net/chess3d'; // localhost;
+export const base2dUrl = 'https://www.stevenvictor.net/chess'; // localhost;
