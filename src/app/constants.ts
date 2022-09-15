@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const rot13Cipher = require('rot13-cipher');
+
 export const standardSetup = 'wRa1,wNb1,wBc1,wQd1,wKe1,wBf1,wNg1,wRh1,wPa2,wPb2,wPc2,wPd2,wPe2,wPf2,wPg2,wPh2,bRa8,bNb8,bBc8,bQd8,bKe8,bBf8,bNg8,bRh8,bPa7,bPb7,bPc7,bPd7,bPe7,bPf7,bPg7,bPh7';
 export const startAngle = 270;
 export const endAngle = startAngle - 180;
@@ -10,3 +13,7 @@ export const pieceScale = 1.0;
 export const localhost = 'http://localhost:4200';
 export const base3dUrl = 'https://www.stevenvictor.net/chess3d'; // localhost;
 export const base2dUrl = 'https://www.stevenvictor.net/chess'; // localhost;
+
+export const samplePuzzle = 'wKa1,bKh8,wBc4,wBd5';
+export const sampleQuestion = 'Here is an easy one to start.  Can white win?';
+export const sampleAnswer = rot13Cipher('No.  It is a draw, although if white could con black into resigning, there could be a possible win.');

@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 import * as THREE from 'three';
 import { Vector2 } from 'three';
+
 import { PieceColor } from './types';
 
 const texturePath = 'assets/textures/';
@@ -24,7 +25,7 @@ export function getWhiteMarble(): THREE.Texture {
 export function getWood(): THREE.Texture {
   if (!wood) {
     wood = new THREE.TextureLoader().load(`${texturePath}wood.jpg`);
-    wood.repeat = new Vector2(0.5, 0.5);
+    wood.repeat = new Vector2(1.0, 1.0);
   }
   return wood;
 }
