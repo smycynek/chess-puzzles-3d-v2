@@ -12,8 +12,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
 
 import { extraDarkGrey, ivoryBackground, materialBoardBase, materialDarkSquare, materialLightSquare, offsetTexture, setPieceColor, setupBaseMaterial, setupTileMaterials } from './appearances';
-import { annotationOffset, annotationPath, base3dUrl,
-  boardMidpoint, endAngle, piecePath, pieceScale, sampleAnswer, samplePuzzle, sampleQuestion, squareLength, standardSetup, startAngle } from './constants';
+import { annotationOffset, annotationPath, base3dUrl, boardMidpoint, endAngle, piecePath, pieceScale, sampleAnswer, samplePuzzle, sampleQuestion, squareLength, standardSetup, startAngle } from './constants';
 import { buildLights } from './lighting';
 import { puzzles } from './puzzles';
 import { Assignment, BoardFile, Piece, PieceColor, pieceMap } from './types';
@@ -63,17 +62,6 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
       .subscribe((params) => {
         if (params['data']) {
           this.dataStr = params['data'] || '';
-        } else {
-          this.router.navigate(
-            [],
-            {
-              relativeTo: this.route,
-              queryParams: { data: samplePuzzle,
-                question: sampleQuestion,
-                answer: sampleAnswer,
-              },
-            },
-          );
         }
         this.question = params['question'] || 'QUESTION UNSET';
         this.answer = rot13Cipher(params['answer'] ? params['answer'] : rot13Cipher('Answer unset.'));
