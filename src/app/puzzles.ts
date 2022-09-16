@@ -53,7 +53,7 @@ export const puzzleData: Array<unknown> = [
   },
   {
     question: 'Can white check?',
-    answer: rot13Cipher('Ab -- oynpx ebbx cvaf vg.'),
+    answer: rot13Cipher('No -- the black rook pins the white rook.'),
     data: 'wKh1,wRd1,bRa1,wPf2,wPg2,wPh2,bPh7,bPg7,bPf7,bKh8',
     view: 'w',
     index: '7',
