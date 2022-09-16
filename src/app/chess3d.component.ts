@@ -6,15 +6,16 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as TWEEN from '@tweenjs/tween.js';
+import { skip } from 'rxjs';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
 
 import { extraDarkGrey, ivoryBackground, materialBoardBase, materialDarkSquare, materialLightSquare, offsetTexture, setPieceColor, setupBaseMaterial, setupTileMaterials } from './appearances';
-import { annotationOffset, annotationPath, base3dUrl, boardMidpoint, endAngle, piecePath, pieceScale, sampleAnswer, samplePuzzle, sampleQuestion, squareLength, standardSetup, startAngle } from './constants';
+import { annotationOffset, annotationPath, boardMidpoint, endAngle, piecePath, pieceScale, squareLength, standardSetup, startAngle } from './constants';
 import { buildLights } from './lighting';
-import { puzzles } from './puzzles';
+import { puzzleData } from './puzzles';
 import { Assignment, BoardFile, Piece, PieceColor, pieceMap } from './types';
 import { getEmailUrlImp, getOrbitCoords, getReverseQuery, getSmsUrlImp, getTwitterUrlImp, parseSquareString } from './utility';
 
@@ -30,13 +31,15 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
   @Input() public fieldOfView = 19.0;
   @Input('nearClipping') public nearClippingPane = 0.01;
   @Input('farClipping') public farClippingPane = 100000;
-  @Input('dataStr') public dataStr = standardSetup;
+  @Input('positionData') public positionData = standardSetup;
   public viewPoint: PieceColor = PieceColor.White;
   public loading = true;
   private canvas!: HTMLCanvasElement;
   private camera!: THREE.PerspectiveCamera;
   private controls!: OrbitControls;
   private pieces: Map<string, THREE.Object3D> = new Map<Piece, THREE.Object3D>();
+  // eslint-disable-next-line no-array-constructor
+  private currentPieces: Array<THREE.Object3D> = new Array<THREE.Object3D>();
   private annotations: Map<string, THREE.Object3D> = new Map<string, THREE.Object3D>();
   private readonly loaderGLTF = new GLTFLoader();
   private renderer!: THREE.WebGLRenderer;
@@ -48,7 +51,7 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
   public answer = '';
   public showAnswer = false;
   public reverseQuery = '';
-
+  public paramsFound = false;
   // eslint-disable-next-line no-useless-constructor, no-empty-function
   constructor(private readonly route: ActivatedRoute, private router: Router) {
   }
@@ -58,21 +61,26 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
   public getSmsUrl = () => getSmsUrlImp();
 
   ngOnInit(): void {
-    this.route.queryParams
+    this.route.queryParams.pipe(skip(1))
       .subscribe((params) => {
+        this.paramsFound = true;
         if (params['data']) {
-          this.dataStr = params['data'] || '';
+          this.setData(params);
         }
-        this.question = params['question'] || 'QUESTION UNSET';
-        this.answer = rot13Cipher(params['answer'] ? params['answer'] : rot13Cipher('Answer unset.'));
-        this.reverseQuery = getReverseQuery(params);
-        this.viewPoint = params['view'] === 'b' ? PieceColor.Black : PieceColor.White;
       });
     this.canvas = document.getElementById('theCanvas') as HTMLCanvasElement;
     this.setBlackButton = document.getElementById('setBlack') as HTMLButtonElement;
     this.setWhiteButton = document.getElementById('setWhite') as HTMLButtonElement;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
+  private setData(params: any) {
+    this.positionData = params['data'] || '';
+    this.question = params['question'] || 'QUESTION UNSET';
+    this.answer = rot13Cipher(params['answer'] ? params['answer'] : rot13Cipher('Answer unset.'));
+    this.reverseQuery = getReverseQuery(params);
+    this.viewPoint = params['view'] === 'b' ? PieceColor.Black : PieceColor.White;
+  }
   async ngAfterViewInit(): Promise<void> {
     await this.createScene().then(() => {
       this.startRenderingLoop();
@@ -86,13 +94,26 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
   }
 
   public goToRandomPuzzle(): void {
-    window.location.href = this.getRandomPuzzle();
+    const data = this.getRandomPuzzleDataObject();
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this.route,
+        queryParams: data,
+      },
+    );
+    this.setData(data);
+    this.showAnswer = false;
+    this.clearPieces();
+    this.drawPositionSetup();
+    this.setInitialColorViewPoint();
   }
 
-  public getRandomPuzzle(): string {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public getRandomPuzzleDataObject(): any {
     const rnd = Math.random();
-    const index = Math.floor(rnd * puzzles.length);
-    return `${base3dUrl}?${puzzles[index]}`;
+    const index = Math.floor(rnd * puzzleData.length);
+    return puzzleData[index];
   }
 
   public setPerspectiveModeWhite(): void {
@@ -151,8 +172,8 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
     this.controls.update();
   }
 
-  private async drawPositionSetup(pieceList: string): Promise<void> {
-    const assignmentList = pieceList.split(',');
+  private async drawPositionSetup(): Promise<void> {
+    const assignmentList = this.positionData.split(',');
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const that = this;
     assignmentList.forEach((assignmentItem: string) => {
@@ -160,6 +181,11 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
       // eslint-disable-next-line no-void
       void that.newPiece(assignmentObject);
     });
+  }
+
+  private clearPieces(): void {
+    this.currentPieces.forEach((piece) => this.scene.remove(piece));
+    this.currentPieces = [];
   }
 
   private drawBase(): void {
@@ -236,6 +262,7 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
       newPiece.position.x = (assignment.file - 1) * squareLength + -boardMidpoint;
       newPiece.position.z = -(assignment.rank - 1) * squareLength + boardMidpoint;
       this.scene.add(newPiece);
+      this.currentPieces.push(newPiece);
     }
   }
 
@@ -352,7 +379,7 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
     this.drawBoard();
     await this.loadAnnotations();
     this.drawAnnotations();
-    await this.drawPositionSetup(this.dataStr);
+    await this.drawPositionSetup();
     this.enlargeCanvas();
     this.loading = false;
   }
