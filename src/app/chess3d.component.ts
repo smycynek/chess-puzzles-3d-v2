@@ -51,7 +51,6 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
   public answer = '';
   public showAnswer = false;
   public reverseQuery = '';
-  public paramsFound = false;
   // eslint-disable-next-line no-useless-constructor, no-empty-function
   constructor(private readonly route: ActivatedRoute, private router: Router) {
   }
@@ -61,23 +60,26 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
   public getSmsUrl = () => getSmsUrlImp();
 
   ngOnInit(): void {
+    this.setQuestionAnswer({});
     this.route.queryParams.pipe(skip(1))
       .subscribe((params) => {
-        this.paramsFound = true;
-        if (params['data']) {
-          this.setData(params);
-        }
+        this.setQuestionAnswer(params);
+        this.setData(params);
       });
     this.canvas = document.getElementById('theCanvas') as HTMLCanvasElement;
     this.setBlackButton = document.getElementById('setBlack') as HTMLButtonElement;
     this.setWhiteButton = document.getElementById('setWhite') as HTMLButtonElement;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private setQuestionAnswer(params: any) {
+    this.question = params['question'] || 'QUESTION UNSET';
+    this.answer = rot13Cipher(params['answer'] ? params['answer'] : rot13Cipher('Answer unset.'));
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
   private setData(params: any) {
     this.positionData = params['data'] || '';
-    this.question = params['question'] || 'QUESTION UNSET';
-    this.answer = rot13Cipher(params['answer'] ? params['answer'] : rot13Cipher('Answer unset.'));
     this.reverseQuery = getReverseQuery(params);
     this.viewPoint = params['view'] === 'b' ? PieceColor.Black : PieceColor.White;
   }
@@ -103,6 +105,7 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
       },
     );
     this.setData(data);
+    this.setQuestionAnswer(data);
     this.showAnswer = false;
     this.clearPieces();
     this.drawPositionSetup();
@@ -379,9 +382,16 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
     this.drawBoard();
     await this.loadAnnotations();
     this.drawAnnotations();
-    await this.drawPositionSetup();
-    this.enlargeCanvas();
-    this.loading = false;
+    try {
+      await this.drawPositionSetup();
+    } catch {
+      this.question = 'Error drawing position setup, showing standard board';
+      this.positionData = standardSetup;
+      await this.drawPositionSetup();
+    } finally {
+      this.enlargeCanvas();
+      this.loading = false;
+    }
   }
 
   private enlargeCanvas(): void {
