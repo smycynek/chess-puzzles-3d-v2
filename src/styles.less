@@ -91,7 +91,26 @@ h1, h2, h3, head, body, span, p, a, button, ul, li, label, input, .nav-tab {
     color: black;
   }
 
+  @keyframes glowing {
+    0% {
+      box-shadow: 0 0 3px #00000000;
+    }
+    25% {
+      box-shadow: 0 0 3px #00000066;
+    }
+    50% {
+      box-shadow: 0 0 10px #000000ff;
+    }
+    75% {
+      box-shadow: 0 0 10px #00000066;
+    }
+    100% {
+      box-shadow: 0 0 3px #00000000;
+    }
+  }
+
   .button-base {
+
     border-width: 2.0px;
     color: black;
     background-color: rgba(117,97,68,0.3);
@@ -99,6 +118,12 @@ h1, h2, h3, head, body, span, p, a, button, ul, li, label, input, .nav-tab {
     border-style: solid;
     margin-right: 1em;
 
+  }
+
+  .glow {
+    animation: glowing 3000ms;
+    animation-delay: 10s;
+    animation-iteration-count: 4;
   }
 
   .active {
