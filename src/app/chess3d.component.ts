@@ -6,6 +6,7 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as TWEEN from '@tweenjs/tween.js';
+import { debug } from 'console';
 import { skip } from 'rxjs';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
@@ -17,7 +18,7 @@ import { annotationOffset, annotationPath, boardMidpoint, endAngle, piecePath, p
 import { buildLights } from './lighting';
 import { puzzleData } from './puzzles';
 import { Assignment, BoardFile, Piece, PieceColor, pieceMap } from './types';
-import { getEmailUrlImp, getOrbitCoords, getReverseQuery, getSmsUrlImp, getTwitterUrlImp, parseSquareString } from './utility';
+import { desktopScale, getEmailUrlImp, getOrbitCoords, getReverseQuery, getSmsUrlImp, getTwitterUrlImp, isMobile, mobileScale, parseSquareString } from './utility';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const rot13Cipher = require('rot13-cipher');
@@ -37,6 +38,8 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
   private canvas!: HTMLCanvasElement;
   private camera!: THREE.PerspectiveCamera;
   private controls!: OrbitControls;
+  private isMobile = false;
+  private scale = desktopScale;
   private pieces: Map<string, THREE.Object3D> = new Map<Piece, THREE.Object3D>();
   // eslint-disable-next-line no-array-constructor
   private currentPieces: Array<THREE.Object3D> = new Array<THREE.Object3D>();
@@ -126,7 +129,7 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
     new TWEEN.Tween(coords)
       .to({ t: endAngle })
       .onUpdate(() => this.setCamera(
-        ...getOrbitCoords(coords.t),
+        ...getOrbitCoords(this.scale, coords.t),
       )).start();
     this.styleViewpointButtons();
   }
@@ -138,7 +141,7 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
     new TWEEN.Tween(coords)
       .to({ t: startAngle })
       .onUpdate(() => this.setCamera(
-        ...getOrbitCoords(coords.t),
+        ...getOrbitCoords(this.scale, coords.t),
       )).start();
     this.styleViewpointButtons();
   }
@@ -359,7 +362,12 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
   }
 
   private setupNeutralView(): void {
+    this.isMobile = isMobile();
+    console.log(this.isMobile);
+    this.scale = this.isMobile ? mobileScale : desktopScale;
     const aspectRatio = this.getAspectRatio();
+    console.log(aspectRatio);
+    // alert(aspectRatio);
     this.camera = new THREE.PerspectiveCamera(
       this.fieldOfView,
       aspectRatio,
@@ -369,7 +377,7 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
     this.camera.lookAt(0.0, 0, 0);
     this.scene.background = ivoryBackground;
     this.setCamera(
-      ...getOrbitCoords(endAngle),
+      ...getOrbitCoords(this.scale, endAngle),
     );
   }
 
@@ -395,10 +403,10 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
   }
 
   private enlargeCanvas(): void {
-    const isMobile = navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i);
-    if (isMobile != null) {
+    if (this.isMobile) {
       this.canvas.style.width = '100%';
-      this.canvas.style.height = '100%';
+      this.canvas.style.height = '80%';
+      this.canvas.height = this.canvas.width * 0.8;
     } else {
       this.canvas.style.width = '70%';
       this.canvas.style.height = '70%';
@@ -413,7 +421,9 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private getAspectRatio = () : number => (this.canvas ? (this.canvas.clientWidth / this.canvas.clientHeight) : 1);
+  private getAspectRatio(): number {
+    return ((this.canvas && this.canvas.clientHeight) ? (this.canvas.clientWidth / this.canvas.clientHeight) : 1.0 / 0.8);
+  }
 
   private setCamera(x: number, y: number, z: number): void {
     this.camera.position.set(x, y, z);

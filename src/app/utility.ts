@@ -6,7 +6,8 @@ import { Assignment, fileSymbolMap, PieceColor, pieceSymbolMap } from './types';
 
 const headline = 'Try%20this%20chess%20puzzle.';
 const twitterBase = 'http://twitter.com/share?text=';
-const cosineScale = 2 / Math.sqrt(2);
+export const desktopScale = 2.0 / Math.sqrt(2);
+export const mobileScale = 3.0 / Math.sqrt(2);
 
 export const parseSquareString = (position: string): Assignment => {
   if (position.length !== 4) {
@@ -42,12 +43,16 @@ export function radians(degrees: number): number {
   return (degrees * Math.PI) / 180;
 }
 
-export function getOrbitCoords(degrees: number): [number, number, number] {
-  return [cosineScale * -0.7 * Math.cos(radians(degrees)),
+export function getOrbitCoords(scale: number, degrees: number): [number, number, number] {
+  return [scale * -0.7 * Math.cos(radians(degrees)),
     0.35,
-    cosineScale * 0.7 * Math.sin(radians(degrees))];
+    scale * 0.7 * Math.sin(radians(degrees))];
 }
 
+export function isMobile() {
+  const mobile = navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i);
+  return (mobile != null);
+}
 export function getTwitterUrlImp(): string {
   const fullStr = encodeURIComponent(window.location.toString());
   return `${twitterBase}${headline}&url=${fullStr}&hashtags=chesspuzzle`;
