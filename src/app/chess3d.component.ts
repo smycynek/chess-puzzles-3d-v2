@@ -316,7 +316,7 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
     model.rotation.x = Math.PI / 2;
     model.rotation.y = Math.PI;
     model.rotation.z = Math.PI;
-    model.position.y = -0.01;
+    model.position.y = -0.0045;
     model.scale.multiplyScalar(0.25);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     model.traverse((object: any) => {
