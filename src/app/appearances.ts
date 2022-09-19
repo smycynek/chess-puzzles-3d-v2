@@ -8,7 +8,7 @@ const texturePath = 'assets/textures/';
 export const darkBrown = new THREE.Color(0x665555);
 export const ivory = new THREE.Color(0xcfbfab);
 export const darkGreen = new THREE.Color(0x009933);
-export const ivoryBackground = new THREE.Color(0xcfbfab);
+export const ivoryBackground = new THREE.Color(0xefdfcb);
 export const extraDarkGrey = new THREE.Color(0x111111);
 let whiteMarble: THREE.Texture;
 let greenGranite: THREE.Texture;

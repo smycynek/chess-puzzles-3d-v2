@@ -13,7 +13,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
 
 import { extraDarkGrey, ivoryBackground, materialBoardBase, materialDarkSquare, materialLightSquare, offsetTexture, setPieceColor, setupBaseMaterial, setupTileMaterials } from './appearances';
-import { annotationOffset, annotationPath, boardMidpoint, endAngle, piecePath, pieceScale, squareLength, standardSetup, startAngle } from './constants';
+import { annotationOffset, annotationPath, boardMidpoint, desktopScale, endAngle, piecePath, pieceScale, squareLength, standardSetup, startAngle } from './constants';
 import { buildLights } from './lighting';
 import { puzzleData } from './puzzles';
 import { Assignment, BoardFile, Piece, PieceColor, pieceMap } from './types';
@@ -126,7 +126,7 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
     new TWEEN.Tween(coords)
       .to({ t: endAngle })
       .onUpdate(() => this.setCamera(
-        ...getOrbitCoords(coords.t),
+        ...getOrbitCoords(desktopScale, coords.t),
       )).start();
     this.styleViewpointButtons();
   }
@@ -138,7 +138,7 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
     new TWEEN.Tween(coords)
       .to({ t: startAngle })
       .onUpdate(() => this.setCamera(
-        ...getOrbitCoords(coords.t),
+        ...getOrbitCoords(desktopScale, coords.t),
       )).start();
     this.styleViewpointButtons();
   }
@@ -192,9 +192,9 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
   }
 
   private drawBase(): void {
-    const boardBaseGeometry = new THREE.BoxGeometry(squareLength * 10, 0.03, squareLength * 10);
+    const boardBaseGeometry = new THREE.BoxGeometry(squareLength * 9.3, 0.0075, squareLength * 9.3);
     const boardBaseMesh: THREE.Mesh = new THREE.Mesh(boardBaseGeometry, materialBoardBase);
-    boardBaseMesh.position.y -= 0.02;
+    boardBaseMesh.position.y -= 0.008;
     boardBaseMesh.position.x = 0;
     boardBaseMesh.position.z = 0;
     this.scene.add(boardBaseMesh);
@@ -249,9 +249,9 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
     if (newPiece != null) {
       if (assignment.piece === Piece.Knight) {
         if (assignment.color === PieceColor.White) {
-          newPiece.rotation.z = 0;
+          newPiece.rotation.z = Math.PI / 4;
         } else {
-          newPiece.rotation.z = Math.PI;
+          newPiece.rotation.z = Math.PI + (Math.PI / 4);
         }
       }
       if (assignment.piece === Piece.Bishop) {
@@ -369,7 +369,7 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
     this.camera.lookAt(0.0, 0, 0);
     this.scene.background = ivoryBackground;
     this.setCamera(
-      ...getOrbitCoords(endAngle),
+      ...getOrbitCoords(desktopScale, endAngle),
     );
   }
 
