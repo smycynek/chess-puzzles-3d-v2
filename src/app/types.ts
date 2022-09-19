@@ -25,12 +25,12 @@ export enum Piece {
 }
 
 export const pieceMap = new Map<Piece, string>();
-pieceMap.set(Piece.Pawn, 'pawn_asm_c.gltf');
-pieceMap.set(Piece.Knight, 'knight_asm_c.gltf');
-pieceMap.set(Piece.Bishop, 'bishop_asm_c.gltf');
-pieceMap.set(Piece.Rook, 'rook_asm_c.gltf');
-pieceMap.set(Piece.Queen, 'queen_asm_c.gltf');
-pieceMap.set(Piece.King, 'king_asm_c.gltf');
+pieceMap.set(Piece.Pawn, 'pawn.glb');
+pieceMap.set(Piece.Knight, 'knight.glb');
+pieceMap.set(Piece.Bishop, 'bishop.glb');
+pieceMap.set(Piece.Rook, 'rook.glb');
+pieceMap.set(Piece.Queen, 'queen.glb');
+pieceMap.set(Piece.King, 'king.glb');
 
 export const fileSymbolMap: Map<string, BoardFile> = new Map<string, BoardFile>([
   ['a', BoardFile.a],

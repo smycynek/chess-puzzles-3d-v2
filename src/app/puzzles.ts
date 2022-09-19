@@ -58,11 +58,16 @@ export const puzzleData: Array<unknown> = [
     view: 'w',
     index: '7',
   },
+  {
+    question: 'White to move: Can white mate? How? (This one is not mine.  It is from *Bobby Fischer Teaches Chess*).',
+    answer: rot13Cipher('Yes. (Qxg7...Rxg7,Rb8+...Rg8, g7#)'),
+    data: 'bRg8,bKh8,bPc7,bPg7,bPh7,bPa6,bPc6,wPg6,bPd5,wNf5,wPh5,wPa4,wPe4,bQf4,wPd3,bBe3,wQb2,wPg2,wRb1,wKh1',
+    view: 'w',
+  },
+  {
+    view: 'b',
+    data: 'wKa1,bKh8,bBc4,bBd5',
+    question: 'Here is an easy one to start.  Can black win?',
+    answer: rot13Cipher('No.  It is a draw, although if black could convince white into resigning, there could be a possible win.'),
+  },
 ];
-
-export const singleSamplePuzzle: unknown = {
-  view: 'w',
-  data: 'wKa1,bKh8,wBc4,wBd5',
-  question: 'Here is an easy one to start.  Can white win?',
-  answer: rot13Cipher('No.  It is a draw, although if white could con black into resigning, there could be a possible win.'),
-};

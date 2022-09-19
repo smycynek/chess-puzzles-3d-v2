@@ -310,13 +310,13 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
   }
 
   private async loadAnnotation(name: string): Promise<void> {
-    const gltfP = await this.loaderGLTF.loadAsync(`${annotationPath}${name}.gltf`);
+    const gltfP = await this.loaderGLTF.loadAsync(`${annotationPath}${name}.glb`);
     const gltf = gltfP;
-    const model = gltf.scene.children[0];
+    const model = gltf.scene.children[2];
     model.rotation.x = Math.PI / 2;
     model.rotation.y = Math.PI;
     model.rotation.z = Math.PI;
-    model.position.y = -0.01;
+    model.position.y = -0.0045;
     model.scale.multiplyScalar(0.25);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     model.traverse((object: any) => {
