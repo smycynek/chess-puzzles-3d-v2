@@ -1,70 +1,131 @@
 /* eslint-disable no-param-reassign */
 import * as THREE from 'three';
+
 import { Vector2 } from 'three';
 
 import { PieceColor } from './types';
 
 const texturePath = 'assets/textures/';
-export const darkBrown = new THREE.Color(0x665555);
-export const ivory = new THREE.Color(0xcfbfab);
-export const darkGreen = new THREE.Color(0x009933);
-export const ivoryBackground = new THREE.Color(0xefdfcb);
-export const extraDarkGrey = new THREE.Color(0x111111);
-let whiteMarble: THREE.Texture;
-let greenGranite: THREE.Texture;
-let wood: THREE.Texture;
 
-export function getWhiteMarble(): THREE.Texture {
-  if (!(whiteMarble)) {
-    whiteMarble = new THREE.TextureLoader().load(`${texturePath}whiteMarble.jpg`);
-    whiteMarble.repeat = new Vector2(0.25, 0.25);
+export const darkBrown = new THREE.Color(0x556677);
+export const ivory = new THREE.Color(0xefdfcb);
+export const white = new THREE.Color(0xffffff);
+export const darkGreen = new THREE.Color(0x003311);
+export const ivoryBackground = new THREE.Color(0xefdfcb);
+export const gold = new THREE.Color(0xefc488);
+
+let whiteGranite: THREE.Texture;
+let blueGranite: THREE.Texture;
+let wood: THREE.Texture;
+let brownMarble: THREE.Texture;
+let lightMarble: THREE.Texture;
+
+export function getLightTileTexture(): THREE.Texture {
+  if (!(whiteGranite)) {
+    whiteGranite = new THREE.TextureLoader().load(`${texturePath}whiteMarble1.jpg`);
+    whiteGranite.repeat = new Vector2(0.25, 0.25);
+    whiteGranite.rotation = Math.random() * 0.2;
   }
-  return whiteMarble;
+  return whiteGranite;
 }
 
-export function getWood(): THREE.Texture {
+export function getDarkTileTexture(): THREE.Texture {
+  if (!blueGranite) {
+    blueGranite = new THREE.TextureLoader().load(`${texturePath}blueGranite.jpg`);
+    blueGranite.repeat = new Vector2(0.25, 0.25);
+    blueGranite.rotation = Math.random() * 0.2;
+  }
+  return blueGranite;
+}
+
+export function getDarkPieceTexture(): THREE.Texture {
+  if (!brownMarble) {
+    brownMarble = new THREE.TextureLoader().load(`${texturePath}brownGranite.jpg`);
+    brownMarble.repeat = new Vector2(1, 1);
+    brownMarble.rotation = Math.random() * 0.2;
+  }
+  return brownMarble;
+}
+
+export function getLightPieceTexture(): THREE.Texture {
+  if (!lightMarble) {
+    lightMarble = new THREE.TextureLoader().load(`${texturePath}whiteMarble2.jpg`);
+    lightMarble.repeat = new Vector2(1, 1);
+    brownMarble.rotation = Math.random() * 0.2;
+  }
+  return lightMarble;
+}
+
+export function getBoardTexture(): THREE.Texture {
   if (!wood) {
-    wood = new THREE.TextureLoader().load(`${texturePath}wood.jpg`);
-    wood.repeat = new Vector2(1.0, 1.0);
+    wood = new THREE.TextureLoader().load(`${texturePath}redwood.jpg`);
   }
   return wood;
 }
 
-export function getGreenGranite(): THREE.Texture {
-  if (!greenGranite) {
-    greenGranite = new THREE.TextureLoader().load(`${texturePath}greenGranite.jpg`);
-    greenGranite.repeat = new Vector2(0.25, 0.25);
-  }
-  return greenGranite;
-}
-
-export function offsetTexture(material: THREE.MeshStandardMaterial): THREE.MeshStandardMaterial {
+export function offsetTexture(material: THREE.MeshPhysicalMaterial, scale: number): THREE.MeshPhysicalMaterial {
   const materialNew = material.clone();
   if (materialNew.map != null) {
     materialNew.map = materialNew.map.clone();
-    materialNew.map.offset = new Vector2(Math.random() * 0.75, Math.random() * 0.75);
+    materialNew.map.offset = new Vector2(Math.random() * scale, Math.random() * scale);
   }
   return materialNew;
 }
 
-export const materialDarkSquare = new THREE.MeshStandardMaterial();
-export const materialLightSquare = new THREE.MeshStandardMaterial();
-export const materialWhitePiece = new THREE.MeshPhongMaterial();
-export const materialBlackPiece = new THREE.MeshPhongMaterial();
-export const materialFelt = new THREE.MeshPhongMaterial();
-export const materialBoardBase = new THREE.MeshStandardMaterial();
+export const materialDarkSquare = new THREE.MeshPhysicalMaterial({
+  clearcoat: 1.0,
+  clearcoatRoughness: 1.0,
+});
+
+export const materialLightSquare = new THREE.MeshPhysicalMaterial({
+  clearcoat: 1.0,
+  clearcoatRoughness: 0.0,
+});
+
+export const materialWhitePiece = new THREE.MeshPhysicalMaterial({
+  clearcoat: 0.5,
+  clearcoatRoughness: 0.20,
+  metalness: 0.15,
+});
+
+export const materialBlackPiece = new THREE.MeshPhysicalMaterial({
+  clearcoat: 1.0,
+  clearcoatRoughness: 0.20,
+  metalness: 0.15,
+});
+
+export const materialFelt = new THREE.MeshPhysicalMaterial({
+  roughness: 0.9,
+  metalness: 0.0,
+  specularIntensity: 0.01,
+});
+
+export const materialBoardBase = new THREE.MeshPhysicalMaterial({
+  clearcoat: 1.0,
+  clearcoatRoughness: 0.1,
+  metalness: 0.15,
+});
+
+export const materialAnnotation = new THREE.MeshPhysicalMaterial({
+  clearcoat: 1.0,
+  metalness: 0.3,
+  specularIntensity: 0.9,
+});
 
 export function setupBaseMaterial(): void {
-  materialBoardBase.color = ivory;
-  materialBoardBase.map = getWood();
+  materialBoardBase.color = new THREE.Color(0xffcccc);
+  materialBoardBase.map = getBoardTexture();
 }
 
 export function setupTileMaterials(): void {
-  materialDarkSquare.map = getGreenGranite();
-  materialLightSquare.map = getWhiteMarble();
-  materialBlackPiece.color = darkBrown;
-  materialWhitePiece.color = ivory;
+  materialDarkSquare.map = getDarkTileTexture();
+  materialLightSquare.map = getLightTileTexture();
+  materialBlackPiece.color = new THREE.Color(0x999999);
+  materialBlackPiece.map = getDarkPieceTexture();
+  materialWhitePiece.color = new THREE.Color(0xbbbbbb);
+  materialWhitePiece.map = getLightPieceTexture();
   materialFelt.color = darkGreen;
+  materialAnnotation.color = gold;
 }
 
 export function setPieceColor(model: THREE.Object3D, color: PieceColor): void {
@@ -73,9 +134,9 @@ export function setPieceColor(model: THREE.Object3D, color: PieceColor): void {
     if (object.isMesh) {
       if (!object.name.includes('felt')) {
         if (color === PieceColor.White) {
-          object.material = materialWhitePiece;
+          object.material = offsetTexture(materialWhitePiece, 0.1);
         } else {
-          object.material = materialBlackPiece;
+          object.material = offsetTexture(materialBlackPiece, 0.1);
         }
       } else {
         object.material = materialFelt;

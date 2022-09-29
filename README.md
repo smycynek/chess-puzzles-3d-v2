@@ -24,3 +24,7 @@ Aside from nicer shading, it supports textures, tilt/zoom, and animation.
 
 ## Live demo
 https://stevenvictor.net/chess3d
+
+
+## Credits
+Textures: https://www.pexels.com/license/

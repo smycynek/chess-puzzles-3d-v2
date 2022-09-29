@@ -12,7 +12,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
 
-import { extraDarkGrey, ivoryBackground, materialBoardBase, materialDarkSquare, materialLightSquare, offsetTexture, setPieceColor, setupBaseMaterial, setupTileMaterials } from './appearances';
+import { ivoryBackground, materialAnnotation, materialBoardBase, materialDarkSquare, materialLightSquare, offsetTexture, setPieceColor, setupBaseMaterial, setupTileMaterials } from './appearances';
 import { annotationOffset, annotationPath, boardMidpoint, desktopScale, endAngle, piecePath, pieceScale, squareLength, standardSetup, startAngle } from './constants';
 import { buildLights } from './lighting';
 import { puzzleData } from './puzzles';
@@ -42,7 +42,7 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
   private currentPieces: Array<THREE.Object3D> = new Array<THREE.Object3D>();
   private annotations: Map<string, THREE.Object3D> = new Map<string, THREE.Object3D>();
   private readonly loaderGLTF = new GLTFLoader();
-  private renderer!: THREE.WebGLRenderer;
+  private renderer !: THREE.WebGLRenderer;
   private scene: THREE.Scene = new THREE.Scene();
 
   private setBlackButton: HTMLButtonElement | null = null;
@@ -207,14 +207,14 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
         const squareGeometry = new THREE.BoxGeometry(squareLength, 0.01, squareLength);
         if (idx % 2 === 0) {
           if (jdx % 2 === 0) {
-            material = offsetTexture(materialDarkSquare);
+            material = offsetTexture(materialDarkSquare, 0.75);
           } else {
-            material = offsetTexture(materialLightSquare);
+            material = offsetTexture(materialLightSquare, 0.75);
           }
         } else if (jdx % 2 === 0) {
-          material = offsetTexture(materialLightSquare);
+          material = offsetTexture(materialLightSquare, 0.75);
         } else {
-          material = offsetTexture(materialDarkSquare);
+          material = offsetTexture(materialDarkSquare, 0.75);
         }
         const squareMesh: THREE.Mesh = new THREE.Mesh(squareGeometry, material);
         squareMesh.position.y -= 0.0060;
@@ -261,6 +261,11 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
           newPiece.rotation.z = Math.PI / 4;
         }
       }
+      if (assignment.color === PieceColor.White) {
+        setPieceColor(newPiece, PieceColor.White);
+      } else {
+        setPieceColor(newPiece, PieceColor.Black);
+      }
       newPiece.position.y = 0;
       newPiece.position.x = (assignment.file - 1) * squareLength + -boardMidpoint;
       newPiece.position.z = -(assignment.rank - 1) * squareLength + boardMidpoint;
@@ -278,8 +283,6 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
     whitePiece.rotation.z = Math.PI / 2;
     whitePiece.scale.multiplyScalar(pieceScale);
     const blackPiece = whitePiece.clone();
-    setPieceColor(whitePiece, PieceColor.White);
-    setPieceColor(blackPiece, PieceColor.Black);
     this.pieces.set(`${piece}_${PieceColor.White}`, whitePiece);
     this.pieces.set(`${piece}_${PieceColor.Black}`, blackPiece);
   }
@@ -321,7 +324,7 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     model.traverse((object: any) => {
       if (object.isMesh) {
-        object.material.color = extraDarkGrey;
+        object.material = materialAnnotation;
       }
     });
     this.annotations.set(name, model);
