@@ -22,7 +22,7 @@ let lightMarble: THREE.Texture;
 
 export function getLightTileTexture(): THREE.Texture {
   if (!(whiteGranite)) {
-    whiteGranite = new THREE.TextureLoader().load(`${texturePath}whiteMarble1.jpg`);
+    whiteGranite = new THREE.TextureLoader().load(`${texturePath}whiteGranite.jpg`);
     whiteGranite.repeat = new Vector2(0.25, 0.25);
     whiteGranite.rotation = Math.random() * 0.2;
   }
@@ -40,7 +40,7 @@ export function getDarkTileTexture(): THREE.Texture {
 
 export function getDarkPieceTexture(): THREE.Texture {
   if (!brownMarble) {
-    brownMarble = new THREE.TextureLoader().load(`${texturePath}brownGranite.jpg`);
+    brownMarble = new THREE.TextureLoader().load(`${texturePath}brownMarble.jpg`);
     brownMarble.repeat = new Vector2(1, 1);
     brownMarble.rotation = Math.random() * 0.2;
   }
@@ -49,7 +49,7 @@ export function getDarkPieceTexture(): THREE.Texture {
 
 export function getLightPieceTexture(): THREE.Texture {
   if (!lightMarble) {
-    lightMarble = new THREE.TextureLoader().load(`${texturePath}whiteMarble2.jpg`);
+    lightMarble = new THREE.TextureLoader().load(`${texturePath}whiteMarble.jpg`);
     lightMarble.repeat = new Vector2(1, 1);
     brownMarble.rotation = Math.random() * 0.2;
   }
@@ -58,7 +58,7 @@ export function getLightPieceTexture(): THREE.Texture {
 
 export function getBoardTexture(): THREE.Texture {
   if (!wood) {
-    wood = new THREE.TextureLoader().load(`${texturePath}redwood.jpg`);
+    wood = new THREE.TextureLoader().load(`${texturePath}redWood.jpg`);
   }
   return wood;
 }
@@ -120,7 +120,7 @@ export function setupBaseMaterial(): void {
 export function setupTileMaterials(): void {
   materialDarkSquare.map = getDarkTileTexture();
   materialLightSquare.map = getLightTileTexture();
-  materialBlackPiece.color = new THREE.Color(0x999999);
+  materialBlackPiece.color = new THREE.Color(0xaa9999);
   materialBlackPiece.map = getDarkPieceTexture();
   materialWhitePiece.color = new THREE.Color(0xbbbbbb);
   materialWhitePiece.map = getLightPieceTexture();
