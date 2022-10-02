@@ -13,7 +13,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
 
 import { ivoryBackground, materialAnnotation, materialBoardBase, materialDarkSquare, materialLightSquare, offsetTexture, setPieceColor, setupBaseMaterial, setupTileMaterials } from './appearances';
-import { annotationOffset, annotationPath, boardMidpoint, desktopScale, endAngle, piecePath, pieceScale, squareLength, standardSetup, startAngle } from './constants';
+import { annotationOffset, annotationPath, base2dUrl, boardMidpoint, desktopScale, endAngle, piecePath, pieceScale, squareLength, standardSetup, startAngle } from './constants';
 import { buildLights } from './lighting';
 import { puzzleData } from './puzzles';
 import { Assignment, BoardFile, Piece, PieceColor, pieceMap } from './types';
@@ -50,7 +50,7 @@ export class Chess3dComponent implements OnInit, AfterViewInit {
   public question = '';
   public answer = '';
   public showAnswer = false;
-  public reverseQuery = '';
+  public reverseQuery = `${base2dUrl}&editMode=true&view=w&data=${encodeURIComponent(standardSetup)}`;
   // eslint-disable-next-line no-useless-constructor, no-empty-function
   constructor(private readonly route: ActivatedRoute, private router: Router) {
   }

@@ -64,7 +64,6 @@ export function getSmsUrlImp(): string {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function getReverseQuery(params: Params): string {
-  const base = `${base2dUrl}#/chess/create/sknsk?`;
   const data = params['data'];
   const question = params['question'];
   const answer = params['answer'];
@@ -74,5 +73,5 @@ export function getReverseQuery(params: Params): string {
   const answerParam = answer ? `&answer=${encodeURIComponent(answer)}` : '';
   const editModeParam = '&editMode=true';
   const viewParam = `&view=${view}`;
-  return `${base}${dataParam}${questionParam}${answerParam}${editModeParam}${viewParam}`;
+  return `${base2dUrl}${dataParam}${questionParam}${answerParam}${editModeParam}${viewParam}`;
 }

@@ -11,5 +11,5 @@ export const boardMidpoint: number = (squareLength * 3.5); // for piece placemen
 export const pieceScale = 1.0;
 export const localhost = 'http://localhost:4200';
 export const base3dUrl = 'https://www.stevenvictor.net/chess3d'; // localhost;
-export const base2dUrl = 'https://www.stevenvictor.net/chess'; // localhost;
+export const base2dUrl = 'https://www.stevenvictor.net/chess/#/chess/create/sknsk?'; // localhost;
 export const desktopScale = 0.85;
