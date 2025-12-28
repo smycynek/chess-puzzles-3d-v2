@@ -1,4 +1,3 @@
-/* eslint-disable no-shadow */
 export enum PieceColor {
   White = 'White',
   Black = 'Black',
@@ -12,7 +11,7 @@ export enum BoardFile {
   e = 5,
   f = 6,
   g = 7,
-  h = 8
+  h = 8,
 }
 
 export enum Piece {
@@ -21,7 +20,7 @@ export enum Piece {
   Bishop = 'B',
   Rook = 'R',
   Queen = 'Q',
-  King = 'K'
+  King = 'K',
 }
 
 export const pieceMap = new Map<Piece, string>();
@@ -40,7 +39,8 @@ export const fileSymbolMap: Map<string, BoardFile> = new Map<string, BoardFile>(
   ['e', BoardFile.e],
   ['f', BoardFile.f],
   ['g', BoardFile.g],
-  ['h', BoardFile.h]]);
+  ['h', BoardFile.h],
+]);
 
 export const pieceSymbolMap = new Map<string, Piece>([
   ['K', Piece.King],

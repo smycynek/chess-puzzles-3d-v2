@@ -1,5 +1,3 @@
-/* eslint-disable dot-notation */
-/* eslint-disable prefer-destructuring */
 import { Params } from '@angular/router';
 import { base2dUrl } from './constants';
 import { Assignment, fileSymbolMap, PieceColor, pieceSymbolMap } from './types';
@@ -9,7 +7,7 @@ const twitterBase = 'http://twitter.com/share?text=';
 
 export const parseSquareString = (position: string): Assignment => {
   if (position.length !== 4) {
-    throw (`Error, bad position string ${position}`);
+    throw `Error, bad position string ${position}`;
   }
   const colorChar = position[0];
   const unitChar = position[1];
@@ -19,15 +17,15 @@ export const parseSquareString = (position: string): Assignment => {
   const color = colorChar === 'w' ? PieceColor.White : PieceColor.Black;
   const piece = pieceSymbolMap.get(unitChar);
   if (!piece) {
-    throw ('Error, bad piece notation');
+    throw 'Error, bad piece notation';
   }
   const file = fileSymbolMap.get(fileChar);
   if (!file) {
-    throw ('Error, bad file notation');
+    throw 'Error, bad file notation';
   }
   const rank = Number(rankChar);
   if (rank < 1 || rank > 8) {
-    throw ('Error, bad rank notation');
+    throw 'Error, bad rank notation';
   }
   return {
     color,
@@ -42,9 +40,7 @@ export function radians(degrees: number): number {
 }
 
 export function getOrbitCoords(scale: number, degrees: number): [number, number, number] {
-  return [scale * Math.cos(radians(degrees)),
-    0.35,
-    scale * Math.sin(radians(degrees))];
+  return [scale * Math.cos(radians(degrees)), 0.35, scale * Math.sin(radians(degrees))];
 }
 
 export function getTwitterUrlImp(): string {
@@ -62,7 +58,6 @@ export function getSmsUrlImp(): string {
   return `sms:&body=${headline}%20${fullStr}`;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function getReverseQuery(params: Params): string {
   const data = params['data'];
   const question = params['question'];

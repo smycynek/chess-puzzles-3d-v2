@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import * as THREE from 'three';
 
 import { Vector2 } from 'three';
@@ -7,8 +6,8 @@ import { PieceColor } from './types';
 
 const texturePath = 'assets/textures/';
 
-export const darkBrown = new THREE.Color(0x556677);
-export const ivory = new THREE.Color(0xefdfcb);
+export const darkGrey = new THREE.Color(0x7799aa);
+export const ivory = new THREE.Color(0xecdfdc);
 export const white = new THREE.Color(0xffffff);
 export const darkGreen = new THREE.Color(0x003311);
 export const ivoryBackground = new THREE.Color(0xefdfcb);
@@ -21,10 +20,11 @@ let brownMarble: THREE.Texture;
 let lightMarble: THREE.Texture;
 
 export function getLightTileTexture(): THREE.Texture {
-  if (!(whiteGranite)) {
+  if (!whiteGranite) {
     whiteGranite = new THREE.TextureLoader().load(`${texturePath}whiteGranite.jpg`);
     whiteGranite.repeat = new Vector2(0.25, 0.25);
     whiteGranite.rotation = Math.random() * 0.2;
+    whiteGranite.colorSpace = THREE.SRGBColorSpace;
   }
   return whiteGranite;
 }
@@ -34,6 +34,7 @@ export function getDarkTileTexture(): THREE.Texture {
     blueGranite = new THREE.TextureLoader().load(`${texturePath}blueGranite.jpg`);
     blueGranite.repeat = new Vector2(0.25, 0.25);
     blueGranite.rotation = Math.random() * 0.2;
+    blueGranite.colorSpace = THREE.SRGBColorSpace;
   }
   return blueGranite;
 }
@@ -43,6 +44,7 @@ export function getDarkPieceTexture(): THREE.Texture {
     brownMarble = new THREE.TextureLoader().load(`${texturePath}brownMarble.jpg`);
     brownMarble.repeat = new Vector2(1, 1);
     brownMarble.rotation = Math.random() * 0.2;
+    brownMarble.colorSpace = THREE.SRGBColorSpace;
   }
   return brownMarble;
 }
@@ -51,7 +53,8 @@ export function getLightPieceTexture(): THREE.Texture {
   if (!lightMarble) {
     lightMarble = new THREE.TextureLoader().load(`${texturePath}whiteMarble.jpg`);
     lightMarble.repeat = new Vector2(1, 1);
-    brownMarble.rotation = Math.random() * 0.2;
+    lightMarble.rotation = Math.random() * 0.2;
+    lightMarble.colorSpace = THREE.SRGBColorSpace;
   }
   return lightMarble;
 }
@@ -59,11 +62,15 @@ export function getLightPieceTexture(): THREE.Texture {
 export function getBoardTexture(): THREE.Texture {
   if (!wood) {
     wood = new THREE.TextureLoader().load(`${texturePath}redWood.jpg`);
+    wood.colorSpace = THREE.SRGBColorSpace;
   }
   return wood;
 }
 
-export function offsetTexture(material: THREE.MeshPhysicalMaterial, scale: number): THREE.MeshPhysicalMaterial {
+export function offsetTexture(
+  material: THREE.MeshPhysicalMaterial,
+  scale: number,
+): THREE.MeshPhysicalMaterial {
   const materialNew = material.clone();
   if (materialNew.map != null) {
     materialNew.map = materialNew.map.clone();
@@ -84,13 +91,13 @@ export const materialLightSquare = new THREE.MeshPhysicalMaterial({
 
 export const materialWhitePiece = new THREE.MeshPhysicalMaterial({
   clearcoat: 0.5,
-  clearcoatRoughness: 0.20,
+  clearcoatRoughness: 0.2,
   metalness: 0.15,
 });
 
 export const materialBlackPiece = new THREE.MeshPhysicalMaterial({
   clearcoat: 1.0,
-  clearcoatRoughness: 0.20,
+  clearcoatRoughness: 0.2,
   metalness: 0.15,
 });
 
@@ -120,9 +127,9 @@ export function setupBaseMaterial(): void {
 export function setupTileMaterials(): void {
   materialDarkSquare.map = getDarkTileTexture();
   materialLightSquare.map = getLightTileTexture();
-  materialBlackPiece.color = new THREE.Color(0xaa9999);
+  materialBlackPiece.color = darkGrey;
   materialBlackPiece.map = getDarkPieceTexture();
-  materialWhitePiece.color = new THREE.Color(0xbbbbbb);
+  materialWhitePiece.color = ivory;
   materialWhitePiece.map = getLightPieceTexture();
   materialFelt.color = darkGreen;
   materialAnnotation.color = gold;

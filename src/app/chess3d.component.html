@@ -1,48 +1,59 @@
 <div>
-  <h1 class="bannerPrimary" *ngIf="loading; else elseBlock">CHESS PUZZLES 3D (LOADING...)</h1>
-  <ng-template #elseBlock>
+  @if (loading()) {
+    <h1 class="bannerPrimary">CHESS PUZZLES 3D (LOADING...)</h1>
+  } @else {
     <h1 class="bannerPrimary">CHESS PUZZLES 3D</h1>
-  </ng-template>
+  }
   <button id="setWhite" (click)="setPerspectiveModeWhite()" type="button" class="color-button">
-    <img src="assets/icons/whiteKing.svg" />
+    <img alt="White Perspective" src="assets/icons/whiteKing.svg" />
   </button>
   <button id="setBlack" (click)="setPerspectiveModeBlack()" type="button" class="color-button">
-    <img src="assets/icons/blackKing.svg" /> </button>
+    <img alt="Black Perspective" src="assets/icons/blackKing.svg" />
+  </button>
   <div id="canvas-container">
-    <canvas id="theCanvas" style="height: 1%; width: 1%;">
-    </canvas>
+    <canvas id="theCanvas" style="height: 1%; width: 1%"> </canvas>
   </div>
   <div>
     <div>
-      <p class='questionAnswer'>{{question}} &nbsp;&nbsp;&nbsp; <strong>{{showAnswer ? answer : ' ' }}
-          </strong></p>
+      <p class="questionAnswer">
+        {{ question() }} &nbsp;&nbsp;&nbsp; <strong>{{ showAnswer() ? answer() : ' ' }} </strong>
+      </p>
     </div>
     <div class="button-container">
-      <button type="button" class="styled-button" (click)="toggleShow()">{{showAnswer? 'HIDE' : 'ANSWER'}}</button>
-        <a href={{reverseQuery}} class="styled-button-href" target="_blank" rel="noreferrer noopener">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EDITOR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-        <button type="button" class="styled-button glow" (click)="goToRandomPuzzle()">RANDOM PUZZLE</button>
-  </div>
-  <h2 class="bannerSecondary">
-    SHARE
-  </h2>
-  <a class="side-link" href={{getTwitterUrl()}} target="_blank" rel="noopener noreferrer">
-    <img style="width:1.75em" alt="share to twitter" src='assets/twitter.svg' />
-  </a>
-  <a class="side-link" href={{getEmailUrl()}} target="_blank" rel="noopener noreferrer">
-    <img style="width:1.75em" alt="share to email" src='assets/email.svg' />
-  </a>
-  <a class="side-link" href={{getSmsUrl()}} target="_blank" rel="noopener noreferrer">
-    <img style="width:1.75em" alt="share to sms" src='assets/sms.svg' />
-  </a>
-  <hr />
+      <button type="button" class="styled-button" (click)="toggleShow()">
+        {{ showAnswer() ? 'HIDE' : 'ANSWER' }}
+      </button>
+      <a
+        href="{{ reverseQuery() }}"
+        class="styled-button-href"
+        target="_blank"
+        rel="noreferrer noopener"
+        >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EDITOR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a
+      >
+      <button type="button" class="styled-button glow" (click)="goToRandomPuzzle()">
+        RANDOM PUZZLE
+      </button>
+    </div>
+    <h2 class="bannerSecondary">SHARE</h2>
+    <a class="side-link" href="{{ getTwitterUrl() }}" target="_blank" rel="noopener noreferrer">
+      <img style="width: 1.75em" alt="share to twitter" src="assets/twitter.svg" />
+    </a>
+    <a class="side-link" href="{{ getEmailUrl() }}" target="_blank" rel="noopener noreferrer">
+      <img style="width: 1.75em" alt="share to email" src="assets/email.svg" />
+    </a>
+    <a class="side-link" href="{{ getSmsUrl() }}" target="_blank" rel="noopener noreferrer">
+      <img style="width: 1.75em" alt="share to sms" src="assets/sms.svg" />
+    </a>
+    <hr />
 
-  <details>
-    <summary class="credits">
-    About...
-      </summary>
-  <p class="credits"> Created by Steven Victor Mycynek 2022</p>
-  <p class="credits italic"> No ads, no logins, just content.</p>
-  <a class="credits" href="https://stevenvictor.net">stevenvictor.net</a>
-  <a class="credits" href="https://github.com/smycynek/chess-puzzles-3d-v2">github.com/smycynek/chess-puzzles-3d-v2</a>
-  </details>
+    <details>
+      <summary class="credits">About...</summary>
+      <p class="credits">Created by Steven Victor Mycynek 2022-2026</p>
+      <p class="credits italic">No ads, no logins, just content.</p>
+      <a class="credits" href="https://stevenvictor.net">stevenvictor.net</a>
+      <a class="credits" href="https://github.com/smycynek/chess-puzzles-3d-v2"
+        >github.com/smycynek/chess-puzzles-3d-v2</a
+      >
+    </details>
+  </div>
 </div>
